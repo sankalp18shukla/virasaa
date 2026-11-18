@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { site } from "@/lib/site";
 import { stores } from "@/lib/content";
 import { ContactForm } from "@/components/ContactForm";
@@ -50,10 +51,16 @@ export default function ContactPage() {
           </p>
         </section>
       </div>
-      <section className="gutter mx-auto max-w-2xl pb-24">
+      <section id="write-to-us" className="gutter mx-auto max-w-2xl scroll-mt-24 pb-24">
         <h2 className="display mb-3 text-center">Write to us</h2>
-        <p className="mb-10 text-center text-[14px] text-ink/80">We usually reply within 2 working days.</p>
-        <ContactForm />
+        <p className="mb-10 text-center text-[14px] text-ink/80">
+          We usually reply within 2 working days. For corporate or event gifting, pick that topic and we&rsquo;ll
+          send a quote.
+        </p>
+        {/* the form reads ?topic= from the URL, so it renders on the client */}
+        <Suspense fallback={<div className="min-h-[560px]" />}>
+          <ContactForm />
+        </Suspense>
       </section>
     </>
   );

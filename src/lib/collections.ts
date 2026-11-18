@@ -11,6 +11,8 @@ export interface Collection {
   description: string;
   /** quick links shown as chips under the description */
   chips?: { label: string; href: string }[];
+  /** show the "contact us for corporate / event gifting" banner */
+  gifting?: boolean;
   filter: (p: Product) => boolean;
 }
 
@@ -69,12 +71,14 @@ const base: Collection[] = [
       { label: "Gift Cards", href: "/products/e-gift-card" },
       { label: "Corporate Gifts", href: "/pages/corporate-gifts" },
     ],
+    gifting: true,
     filter: (p) => notGift(p) && p.price <= 2499,
   },
   {
     handle: "under-999",
     title: "Gifts under Rs. 999",
     description: "Small handmade pieces that still feel special. Placeholder copy for this edit.",
+    gifting: true,
     filter: (p) => notGift(p) && p.price <= 999,
   },
 ];

@@ -8,6 +8,7 @@ import { money } from "@/lib/format";
 import { AddToBag } from "@/components/AddToBag";
 import { Carousel } from "@/components/Carousel";
 import { FeaturedProduct } from "@/components/FeaturedProduct";
+import { GiftingSection } from "@/components/GiftingEnquiry";
 import { HorizontalScroll } from "@/components/HorizontalScroll";
 import { EditorialArt, ProductArt } from "@/components/Placeholder";
 import { ProductCard } from "@/components/ProductCard";
@@ -67,6 +68,7 @@ export default function HomePage() {
       />
 
       <Craft />
+      <GiftingSection />
       <PressWall />
       <Beyond />
       <Stores />

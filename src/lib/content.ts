@@ -528,13 +528,13 @@ export const infoPages: InfoPage[] = [
     slug: "corporate-gifts",
     title: "Corporate Gifts",
     eyebrow: "For teams and clients",
-    lead: "Placeholder: bulk orders, festive hampers, custom packaging and engraved pieces for teams, events and clients.",
+    lead: "Placeholder: bulk orders, festive hampers, wedding favours, custom packaging and engraved pieces for teams, events and clients.",
     blocks: [
       { heading: "What we offer", body: "Placeholder: minimum quantities, customisation options and price tiers." },
       { heading: "Lead times", body: "Placeholder: typical timelines for stock items and for custom runs." },
       { heading: "Get a quote", body: `Placeholder: tell us quantity, budget and date at ${MAIL} and we will reply within 2 working days.` },
     ],
-    cta: { label: "Request a quote", href: "/pages/contact" },
+    cta: { label: "Request a quote", href: "/pages/contact?topic=gifting#write-to-us" },
   },
 ];
 

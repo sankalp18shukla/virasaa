@@ -35,6 +35,9 @@ export const site = {
   ],
 };
 
+/** Opens the contact form with "Corporate & event gifting" pre-selected. */
+export const giftingEnquiryHref = "/pages/contact?topic=gifting#write-to-us";
+
 /* ------------------------------------------------------------------
    CATALOGUE TAXONOMY
    Departments -> product types. Rooms and craft collections cut across them.
@@ -194,7 +197,9 @@ export const mainNav: NavItem[] = [
         links: [
           { label: "Housewarming", href: "/collections/home-decor" },
           { label: "Festive & Pooja", href: "/collections/pooja" },
+          { label: "Weddings & Events", href: giftingEnquiryHref },
           { label: "Corporate", href: "/pages/corporate-gifts" },
+          { label: "Bulk Orders: Contact Us", href: giftingEnquiryHref },
         ],
       },
       {

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { collectionProducts, collections, getCollection } from "@/lib/collections";
 import { CollectionView } from "@/components/CollectionView";
+import { GiftingBanner } from "@/components/GiftingEnquiry";
 
 // Every page is pre-generated from generateStaticParams, so reading params is fine here.
 export const instant = false;
@@ -44,6 +45,11 @@ export default async function CollectionPage({ params }: PageProps<"/collections
           </ul>
         )}
       </header>
+      {collection.gifting && (
+        <div className="mt-10">
+          <GiftingBanner />
+        </div>
+      )}
       {/* filters read ?for= from the URL, so this part renders on the client */}
       <Suspense fallback={<div className="min-h-[60vh]" />}>
         <CollectionView products={products} basePath={`/collections/${handle}`} />

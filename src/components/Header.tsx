@@ -13,14 +13,62 @@ import { Drawer } from "./Drawer";
 import { CartDrawer } from "./CartDrawer";
 import { EditorialArt, ProductArt } from "./Placeholder";
 
-/** Brand lock-up: swan & lotus emblem + "virasaa" wordmark (files in public/brand). */
-export function Logo({ className = "" }: { className?: string }) {
+/** Brand lock-up: swan & lotus emblem + "virasaa" wordmark (files in public/brand).
+ *  `collapsed` folds the wordmark back into the emblem (used once the page is scrolled). */
+export function Logo({ className = "", collapsed = false }: { className?: string; collapsed?: boolean }) {
   return (
-    <Link href="/" aria-label={`${site.name} home`} className={cx("flex shrink-0 items-center gap-2.5", className)}>
-      <Image src="/brand/virasaa-emblem.png" alt="" width={758} height={523} preload className="h-9 w-auto md:h-11" />
-      <Image src="/brand/virasaa-wordmark.png" alt="" width={644} height={147} preload className="h-[22px] w-auto md:h-[26px]" />
+    <Link href="/" aria-label={`${site.name} home`} className={cx("flex shrink-0 items-center", className)}>
+      <Image
+        src="/brand/virasaa-emblem.png"
+        alt=""
+        width={758}
+        height={523}
+        preload
+        className={cx(
+          "relative z-10 h-9 w-auto transition-transform ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none md:h-11",
+          collapsed ? "scale-[1.12] delay-300 duration-500" : "scale-100 duration-500",
+        )}
+      />
+      {/* the grid column animates 1fr -> 0fr so the wordmark's width collapses smoothly */}
+      <span
+        aria-hidden={collapsed}
+        className={cx(
+          "grid transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none",
+          collapsed ? "grid-cols-[0fr]" : "grid-cols-[1fr]",
+        )}
+      >
+        <span className="min-w-0 overflow-hidden">
+          <Image
+            src="/brand/virasaa-wordmark.png"
+            alt=""
+            width={644}
+            height={147}
+            preload
+            className={cx(
+              "ml-2.5 h-[22px] w-auto max-w-none origin-left transition-[transform,opacity,filter] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none md:h-[26px]",
+              collapsed ? "-translate-x-[70%] scale-[0.25] opacity-0 blur-[3px]" : "translate-x-0 scale-100 opacity-100 blur-0",
+            )}
+          />
+        </span>
+      </span>
     </Link>
   );
+}
+
+/** True once the page has scrolled past the top section; false again only near the very top.
+ *  Two thresholds stop the logo flickering when you hover around one scroll position. */
+function useScrolledPastTop(hideAfter = 180, showBefore = 40) {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setPast((prev) => (prev ? y > showBefore : y > hideAfter));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [hideAfter, showBefore]);
+  return past;
 }
 
 /** Closes any open drawer when the route changes. Kept in its own Suspense
@@ -37,6 +85,7 @@ export function Header() {
   const panel = usePanel();
   const { count } = useCart();
   const [openMenu, setOpenMenu] = useState<number | null>(null);
+  const scrolled = useScrolledPastTop();
 
   const active = openMenu !== null ? mainNav[openMenu] : null;
 
@@ -50,7 +99,10 @@ export function Header() {
         onMouseLeave={() => setOpenMenu(null)}
       >
         <div className="gutter flex h-16 items-center justify-between gap-6">
-          <Logo />
+          {/* both sides flex equally so the nav stays put while the wordmark folds away */}
+          <div className="flex lg:flex-1">
+            <Logo collapsed={scrolled} />
+          </div>
 
           <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
             {mainNav.map((item, i) => (
@@ -72,7 +124,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-end gap-1 lg:flex-1">
             <button
               onClick={() => ui.open("search")}
               aria-label="Search"
