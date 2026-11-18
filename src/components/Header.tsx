@@ -25,16 +25,16 @@ export function Logo({ className = "", collapsed = false }: { className?: string
         height={523}
         preload
         className={cx(
-          "relative z-10 h-9 w-auto transition-transform ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none md:h-11",
-          collapsed ? "scale-[1.12] delay-300 duration-500" : "scale-100 duration-500",
+          "relative z-10 h-9 w-auto transition-transform duration-[1200ms] ease-[cubic-bezier(0.33,0,0.2,1)] motion-reduce:transition-none md:h-11",
+          collapsed ? "scale-[1.08] delay-[700ms]" : "scale-100 delay-0",
         )}
       />
       {/* the grid column animates 1fr -> 0fr so the wordmark's width collapses smoothly */}
       <span
         aria-hidden={collapsed}
         className={cx(
-          "grid transition-[grid-template-columns] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none",
-          collapsed ? "grid-cols-[0fr]" : "grid-cols-[1fr]",
+          "grid transition-[grid-template-columns] duration-[1300ms] ease-[cubic-bezier(0.45,0,0.2,1)] motion-reduce:transition-none",
+          collapsed ? "grid-cols-[0fr] delay-[350ms]" : "grid-cols-[1fr] delay-0",
         )}
       >
         <span className="min-w-0 overflow-hidden">
@@ -45,8 +45,10 @@ export function Logo({ className = "", collapsed = false }: { className?: string
             height={147}
             preload
             className={cx(
-              "ml-2.5 h-[22px] w-auto max-w-none origin-left transition-[transform,opacity,filter] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none md:h-[26px]",
-              collapsed ? "-translate-x-[70%] scale-[0.25] opacity-0 blur-[3px]" : "translate-x-0 scale-100 opacity-100 blur-0",
+              "ml-2.5 h-[22px] w-auto max-w-none origin-left transition-[transform,opacity,filter] duration-[1400ms] ease-[cubic-bezier(0.45,0,0.2,1)] motion-reduce:transition-none md:h-[26px]",
+              collapsed
+                ? "-translate-x-[70%] scale-[0.25] opacity-0 blur-[3px] delay-0"
+                : "translate-x-0 scale-100 opacity-100 blur-0 delay-[450ms]",
             )}
           />
         </span>
@@ -55,18 +57,24 @@ export function Logo({ className = "", collapsed = false }: { className?: string
   );
 }
 
-/** True once the page has scrolled past the top section; false again only near the very top.
- *  Two thresholds stop the logo flickering when you hover around one scroll position. */
-function useScrolledPastTop(hideAfter = 180, showBefore = 40) {
+/** True once the page has scrolled past the top section (about one screen height);
+ *  false again only once you are back in the top half of it. Thresholds are fractions
+ *  of the viewport height; two of them stop the logo flickering around one position. */
+function useScrolledPastTop(hideAfter = 0.9, showBefore = 0.5) {
   const [past, setPast] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setPast((prev) => (prev ? y > showBefore : y > hideAfter));
+      const vh = window.innerHeight;
+      setPast((prev) => (prev ? y > vh * showBefore : y > vh * hideAfter));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [hideAfter, showBefore]);
   return past;
 }
