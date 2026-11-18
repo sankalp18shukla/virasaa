@@ -53,6 +53,7 @@ export function CartLineRow({ line, onNavigate }: { line: ResolvedLine; onNaviga
           type={p.type}
           palette={line.colorInfo.palette}
           tag=""
+          sizes="128px"
           className="h-28 w-[88px]"
         />
       </Link>

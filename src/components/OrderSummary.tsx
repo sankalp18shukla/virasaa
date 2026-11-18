@@ -35,7 +35,7 @@ export function OrderSummary({ order }: { order: Order }) {
           const palette = p?.colors.find((c) => c.name === item.color)?.palette ?? p?.colors[0].palette;
           return (
             <li key={`${item.handle}-${item.color}`} className="flex items-center gap-4 py-4">
-              {p && palette && <ProductArt seed={p.handle} type={p.type} palette={palette} tag="" className="h-20 w-16 shrink-0" />}
+              {p && palette && <ProductArt seed={p.handle} type={p.type} palette={palette} tag="" sizes="96px" className="h-20 w-16 shrink-0" />}
               <div className="min-w-0 flex-1">
                 <Link href={`/products/${item.handle}`} className="text-[13px] uppercase tracking-[0.04em] hover:underline">
                   {item.name}

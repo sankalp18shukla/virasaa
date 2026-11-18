@@ -11,7 +11,7 @@ export const site = {
   description:
     "Virasaa makes handcrafted wooden home decor, kitchenware and accessories, carved and finished by artisans in small batches.",
   /** Show a small "DUMMY" tag on every placeholder image. Set to false to hide. */
-  showPlaceholderTags: true,
+  showPlaceholderTags: false,
 
   currency: { code: "INR", prefix: "Rs. " },
   freeShippingThreshold: 0, // 0 = always free (demo)
@@ -286,4 +286,5 @@ export const footerLegal = [
   { label: "Disclaimer", href: "/policies/disclaimer" },
   { label: "Intellectual Property", href: "/policies/intellectual-property" },
   { label: "Sitemap", href: "/sitemap" },
+  { label: "Photo credits", href: "/pages/photo-credits" },
 ];

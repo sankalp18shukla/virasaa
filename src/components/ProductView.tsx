@@ -230,7 +230,7 @@ export function ProductView({ product: p }: { product: Product }) {
       {/* sticky add-to-bag bar */}
       {showBar && p.inStock && (
         <div className="fixed inset-x-3 bottom-3 z-30 mx-auto flex max-w-xl animate-fade-in items-center gap-3 bg-white p-2.5 shadow-[0_8px_40px_rgba(0,0,0,0.22)]">
-          <ProductArt seed={p.handle} type={p.type} palette={color.palette} tag="" className="h-14 w-12 shrink-0" />
+          <ProductArt seed={p.handle} type={p.type} palette={color.palette} tag="" sizes="96px" className="h-14 w-12 shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-[12.5px] uppercase tracking-[0.04em]">{p.name}</p>
             <p className="text-[11px] uppercase tracking-[0.06em] text-muted">

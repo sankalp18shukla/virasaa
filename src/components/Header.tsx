@@ -149,7 +149,7 @@ export function Header() {
               </div>
               <div className="col-span-4 grid grid-cols-2 gap-3">
                 {active.tiles?.map((seed) => (
-                  <EditorialArt key={seed} seed={seed} className="aspect-[4/5]" />
+                  <EditorialArt key={seed} seed={seed} sizes="15vw" className="aspect-[4/5]" />
                 ))}
               </div>
             </div>
@@ -320,6 +320,7 @@ function SearchOverlay({ open }: { open: boolean }) {
                           type={p.type}
                           palette={p.colors[0].palette}
                           tag=""
+                          sizes="128px"
                           className="h-16 w-14 shrink-0"
                         />
                         <span className="flex-1 text-[13px] uppercase tracking-[0.04em]">{p.name}</span>

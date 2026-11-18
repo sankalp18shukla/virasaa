@@ -345,7 +345,7 @@ export function CheckoutView() {
               {lines.map((l) => (
                 <li key={l.key} className="flex items-center gap-4 py-3">
                   <div className="relative shrink-0">
-                    <ProductArt seed={l.handle} type={l.product.type} palette={l.colorInfo.palette} tag="" className="h-[72px] w-14" />
+                    <ProductArt seed={l.handle} type={l.product.type} palette={l.colorInfo.palette} tag="" sizes="96px" className="h-[72px] w-14" />
                     <span className="absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1 text-[10px] text-cream">
                       {l.qty}
                     </span>

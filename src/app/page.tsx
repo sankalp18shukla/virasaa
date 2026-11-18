@@ -82,6 +82,8 @@ function Hero() {
       <EditorialArt
         key={seed}
         seed={seed}
+        index={offset * 7 + i}
+        sizes="(max-width: 768px) 36vw, 24vw"
         tag={i === 0 ? "Dummy campaign photo" : ""}
         className={i % 3 === 1 ? "h-full w-[36vw] shrink-0 md:w-[24vw]" : "h-full w-[30vw] shrink-0 md:w-[18vw]"}
       />
@@ -168,21 +170,17 @@ function BestSellers({ products }: { products: Product[] }) {
         {products.map((p) => (
           <article key={p.handle} className="w-[78vw] shrink-0 snap-start scroll-ml-5 sm:w-[400px] md:scroll-ml-12">
             <Link href={`/products/${p.handle}`} aria-label={p.name} className="relative block">
-              <EditorialArt seed={`best-${p.handle}`} className="aspect-[4/5] rounded-xl">
-                <div className="flex h-full items-end justify-center p-6">
-                  <ProductArt
-                    seed={p.handle}
-                    type={p.type}
-                    palette={p.colors[0].palette}
-                    tag=""
-                    bg="transparent"
-                    className="h-[62%] w-[70%]"
-                  />
-                </div>
-              </EditorialArt>
+              <ProductArt
+                seed={p.handle}
+                type={p.type}
+                palette={p.colors[0].palette}
+                tag=""
+                sizes="(max-width: 640px) 78vw, 400px"
+                className="aspect-[4/5] rounded-xl"
+              />
             </Link>
             <div className="mt-4 flex items-center gap-3">
-              <ProductArt seed={p.handle} type={p.type} palette={p.colors[0].palette} tag="" className="h-14 w-12 shrink-0" />
+              <ProductArt seed={p.handle} type={p.type} palette={p.colors[0].palette} tag="" sizes="96px" className="h-14 w-12 shrink-0" />
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-[11.5px] uppercase tracking-[0.06em]">
                   <Link href={`/products/${p.handle}`} className="hover:underline">
@@ -407,6 +405,8 @@ function PressWall() {
           <EditorialArt
             key={i}
             seed={`press-${i}`}
+            index={i}
+            sizes="(max-width: 768px) 25vw, 12.5vw"
             tag={i === 0 ? "Dummy press tiles" : ""}
             className={`aspect-square ${i >= 16 ? "hidden md:block" : ""}`}
           />

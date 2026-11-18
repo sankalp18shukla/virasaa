@@ -7,14 +7,14 @@ export function Footer() {
   const { company } = site;
   return (
     <footer className="bg-ink text-cream">
-      <div className="gutter grid gap-10 pb-16 pt-20 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-16">
-        <Link href="/" aria-label={`${site.name} home`} className="mx-auto block w-fit lg:mx-0">
-          <Image src="/brand/virasaa-logo.png" alt="" width={758} height={685} className="h-auto w-[220px] md:w-[260px]" />
+      <div className="gutter flex flex-col items-center pb-14 pt-16 text-center md:pt-20">
+        <Link href="/" aria-label={`${site.name} home`} className="block w-fit">
+          <Image src="/brand/virasaa-logo.png" alt="" width={758} height={685} className="h-auto w-[150px] md:w-[180px]" />
         </Link>
-        <p className="max-w-xs text-[13px] leading-relaxed text-cream/85 lg:mx-auto lg:text-center">
+        <p className="mt-6 max-w-sm text-[13px] leading-relaxed text-cream/85">
           {site.description}
         </p>
-        <ul className="flex flex-wrap gap-2 lg:justify-end">
+        <ul className="mt-6 flex flex-wrap justify-center gap-2">
           {site.socials.map((s) => (
             <li key={s.label}>
               <a
@@ -32,7 +32,11 @@ export function Footer() {
         </ul>
       </div>
 
-      <div className="gutter grid gap-x-8 gap-y-14 pb-20 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="gutter">
+        <div className="border-t border-cream/15" />
+      </div>
+
+      <div className="gutter grid gap-x-8 gap-y-14 pb-20 pt-14 sm:grid-cols-2 lg:grid-cols-3">
         <div className="text-center">
           <h3 className="mb-5 text-[17px] uppercase tracking-[0.02em]">Contact</h3>
           <address className="text-[13px] not-italic leading-relaxed text-cream/85">

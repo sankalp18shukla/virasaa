@@ -23,19 +23,22 @@ Tip: search the codebase for `DUMMY` and `Placeholder` to find every spot in cod
 
 ## 2. Images (all of them)
 
-There are **no image files** in the project. Every picture is drawn in code by
-`src/components/Placeholder.tsx`:
+Every picture is a **stock photo of Indian handicrafts** from Wikimedia Commons (Channapatna,
+Etikoppaka and Kondapalli toys, Kashmiri papier-mache, Dhokra, Bankura terracotta...). They are
+not photos of the catalogue products.
 
-- `ProductArt`: the wooden-object illustrations (product cards, gallery, bag, checkout, search).
-  The six gallery "views" are the same drawing cropped six ways.
-- `EditorialArt`: the soft colour-field interior "photos" (hero mosaic, lifestyle panels, collection
-  rail, press wall, store photos, journal covers, info pages, mega menu tiles).
+- Files: `public/images/crafts/*.webp`
+- Registry, credits, licences and the product → photo mapping: `src/lib/photos.ts`
+- Rendered by `src/components/Placeholder.tsx`: `ProductArt` (product cards, gallery, bag,
+  checkout, search) and `EditorialArt` (hero mosaic, lifestyle panels, collection rail, press wall,
+  store photos, journal covers, info pages, mega menu tiles).
+- Attribution page (required by the CC BY / CC BY-SA licences): `/pages/photo-credits`, linked in the footer.
 
-Each placeholder carries a small **DUMMY IMAGE / DUMMY PHOTO** tag in its corner. Turn the
-tags off with `site.showPlaceholderTags = false` in `src/lib/site.ts`.
+The small **DUMMY IMAGE / DUMMY PHOTO** corner tags are off; turn them back on with
+`site.showPlaceholderTags = true` in `src/lib/site.ts`.
 
-To use real photos, replace the bodies of those two components with `next/image`. The props
-already tell you which product, colour and view is wanted.
+To use real product photography, add your files and point `src/lib/photos.ts` (or the two
+components) at them. The props already tell you which product, colour and view is wanted.
 
 Other decorative stand-ins:
 

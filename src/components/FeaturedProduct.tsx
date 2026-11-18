@@ -25,7 +25,7 @@ export function FeaturedProduct({ product: p }: { product: Product }) {
               aria-pressed={v === view}
               className={cx("cursor-pointer border", v === view ? "border-ink" : "border-transparent")}
             >
-              <ProductArt seed={p.handle} type={p.type} palette={color.palette} view={v} tag="" className="aspect-[4/5]" />
+              <ProductArt seed={p.handle} type={p.type} palette={color.palette} view={v} tag="" sizes="96px" className="aspect-[4/5]" />
             </button>
           ))}
         </div>
