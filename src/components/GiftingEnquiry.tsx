@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BriefcaseBusiness, Gem, Gift, Lamp, PartyPopper, PenTool, Truck } from "lucide-react";
 import { giftingEnquiryHref } from "@/lib/site";
-import { EditorialArt } from "./Placeholder";
 
 /* Copy here is DUMMY placeholder text: swap in your real minimums, lead times and offers. */
 
@@ -21,40 +20,41 @@ const perks = [
 /** Homepage section: invites event and corporate gifting enquiries. */
 export function GiftingSection() {
   return (
-    <section className="grid bg-paper lg:grid-cols-2" aria-labelledby="gifting">
-      <EditorialArt seed="gifting-hampers" tag="Dummy gift hamper photo" className="aspect-[4/3] lg:aspect-auto lg:min-h-[640px]" />
-      <div className="gutter flex flex-col justify-center py-16 md:py-20 lg:px-16 xl:px-20">
-        <p className="eyebrow mb-5">Gifting in bulk</p>
-        <h2 id="gifting" className="display">
-          Corporate &amp; event gifting
-        </h2>
-        <p className="mt-6 max-w-lg text-[14px] leading-relaxed">
-          Handmade wooden gifts for your team, clients and guests, from 20 pieces to 2,000. Tell us the occasion,
-          quantity and budget and we&rsquo;ll put together a curated selection with custom packaging.
-        </p>
+    <section className="border-t border-line bg-white py-20 md:py-28" aria-labelledby="gifting">
+      <div className="gutter mx-auto max-w-6xl">
+        <header className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow mb-5">Gifting in bulk</p>
+          <h2 id="gifting" className="display">
+            Corporate &amp; event gifting
+          </h2>
+          <p className="mt-6 text-[14px] leading-relaxed text-ink/75">
+            Handmade wooden gifts for your team, clients and guests, from 20 pieces to 2,000. Tell us the occasion,
+            quantity and budget and we&rsquo;ll put together a curated selection with custom packaging.
+          </p>
+        </header>
 
-        <ul className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {occasions.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="flex gap-4">
-              <Icon size={24} strokeWidth={1.3} className="mt-0.5 shrink-0 text-accent" aria-hidden />
-              <div>
-                <h3 className="text-[13px] uppercase tracking-[0.08em]">{title}</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-ink/75">{body}</p>
-              </div>
+            <li key={title} className="flex flex-col items-center border border-line px-6 py-9 text-center">
+              <span className="grid h-14 w-14 place-items-center rounded-full bg-paper text-accent">
+                <Icon size={22} strokeWidth={1.4} aria-hidden />
+              </span>
+              <h3 className="mt-5 text-[13px] uppercase tracking-[0.1em]">{title}</h3>
+              <p className="mt-2 max-w-[220px] text-[13px] leading-relaxed text-ink/70">{body}</p>
             </li>
           ))}
         </ul>
 
-        <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-ink/15 pt-6">
+        <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3">
           {perks.map(({ icon: Icon, label }) => (
-            <li key={label} className="flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] text-muted">
-              <Icon size={15} strokeWidth={1.5} aria-hidden />
+            <li key={label} className="flex items-center gap-2 text-[11px] uppercase tracking-[0.12em] text-muted">
+              <Icon size={15} strokeWidth={1.5} className="text-accent" aria-hidden />
               {label}
             </li>
           ))}
         </ul>
 
-        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           <Link href={giftingEnquiryHref} className="btn">
             Contact us for gifting
           </Link>

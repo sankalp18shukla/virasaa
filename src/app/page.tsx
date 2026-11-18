@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Hammer, HandHeart, MapPin, Sparkles, TreePine } from "lucide-react";
+import { ArrowRight, BookOpen, Feather, Gift, Hammer, HandHeart, Mail, MapPin, Sparkles, TreePine } from "lucide-react";
 import { collectionProducts } from "@/lib/collections";
 import { getProduct, type Product } from "@/lib/products";
 import { stores } from "@/lib/content";
@@ -110,7 +110,7 @@ function Hero() {
         ))}
       </div>
       <div className="absolute inset-x-0 bottom-24 flex justify-center gap-3 px-5 md:bottom-10">
-        <Link href="/collections/home-decor" className="btn flex-1 whitespace-nowrap px-3 hover:!bg-white sm:w-52 sm:flex-none">
+        <Link href="/collections/home-decor" className="btn flex-1 whitespace-nowrap px-3 sm:w-52 sm:flex-none">
           Shop home decor
         </Link>
         <Link href="/collections/accessories" className="btn-outline flex-1 whitespace-nowrap bg-white/85 px-3 backdrop-blur sm:w-52 sm:flex-none">
@@ -347,8 +347,8 @@ function WideTiles() {
               href={t.href}
               className={
                 t.solid
-                  ? "btn mt-6 !border-white !bg-white !text-ink hover:!bg-transparent hover:!text-white"
-                  : "btn-outline mt-6 !border-white !text-white hover:!bg-white hover:!text-ink"
+                  ? "btn mt-6 !border-white !bg-white !text-ink [--btn-fill:var(--color-ink)] hover:!text-white"
+                  : "btn-outline mt-6 !border-white !text-white [--btn-fill:#fff] hover:!text-ink"
               }
             >
               {t.cta}
@@ -400,36 +400,38 @@ function Craft() {
 }
 
 function PressWall() {
+  // DUMMY: swap each slot for a press / collaborator logo (an <Image> about 28px tall works well).
+  const slots = Array.from({ length: 5 }, (_, i) => i);
   return (
-    <section className="relative overflow-hidden" aria-label="Press">
-      <div className="grid grid-cols-4 gap-1 md:grid-cols-8">
-        {Array.from({ length: 24 }, (_, i) => (
-          <EditorialArt
-            key={i}
-            seed={`press-${i}`}
-            index={i}
-            sizes="(max-width: 768px) 25vw, 12.5vw"
-            tag={i === 0 ? "Dummy press tiles" : ""}
-            className={`aspect-square ${i >= 16 ? "hidden md:block" : ""}`}
-          />
-        ))}
-      </div>
-      <div className="absolute inset-0 grid place-items-center p-5">
-        <div className="w-full max-w-2xl bg-ink px-8 py-12 text-center text-cream md:px-14">
-          <p className="eyebrow mb-4 !text-cream/70">As seen in</p>
-          <h2 className="display">{site.name} in the spotlight</h2>
-          <p className="mx-auto mt-5 max-w-md text-[13.5px] text-cream/85">
-            Placeholder copy: mention the magazines, platforms and collaborations that have featured your work.
-          </p>
-          <a
-            href={site.socials[0].href}
-            target="_blank"
-            rel="noreferrer"
-            className="link-underline mt-6 inline-block text-[11px] uppercase tracking-[0.12em]"
-          >
-            Follow us on Instagram
-          </a>
-        </div>
+    <section className="bg-white py-20 md:py-24" aria-labelledby="press">
+      <div className="gutter mx-auto max-w-5xl text-center">
+        <p className="eyebrow mb-4">As seen in</p>
+        <h2 id="press" className="display">
+          {site.name} in the spotlight
+        </h2>
+        <p className="mx-auto mt-5 max-w-md text-[14px] leading-relaxed text-ink/75">
+          Placeholder copy: mention the magazines, platforms and collaborations that have featured your work.
+        </p>
+        <ul className="mt-12 grid grid-cols-2 border-y border-line sm:grid-cols-3 lg:grid-cols-5">
+          {slots.map((i) => (
+            <li
+              key={i}
+              className={`grid h-24 place-items-center text-[12px] uppercase tracking-[0.18em] text-muted/70 ${
+                i === 4 ? "hidden lg:grid" : ""
+              }`}
+            >
+              Press logo
+            </li>
+          ))}
+        </ul>
+        <a
+          href={site.socials[0].href}
+          target="_blank"
+          rel="noreferrer"
+          className="link-underline mt-10 inline-block text-[11px] uppercase tracking-[0.12em]"
+        >
+          Follow us on Instagram
+        </a>
       </div>
     </section>
   );
@@ -437,25 +439,30 @@ function PressWall() {
 
 function Beyond() {
   const cards = [
-    { title: "E-gift cards", body: "Let them choose their own. Simple and thoughtful.", cta: "Buy gift cards", href: "/products/e-gift-card" },
-    { title: "About us", body: "The story shaping every design.", cta: "Read our story", href: "/pages/about" },
-    { title: "Journal", body: "Stories, thoughts and inspiration behind the brand.", cta: "Read the journal", href: "/journal" },
-    { title: "Contact us", body: "Reach out for support, questions or collaborations.", cta: "Get in touch", href: "/pages/contact" },
+    { icon: Gift, title: "E-gift cards", body: "Let them choose their own. Simple and thoughtful.", cta: "Buy gift cards", href: "/products/e-gift-card" },
+    { icon: Feather, title: "About us", body: "The story shaping every design.", cta: "Read our story", href: "/pages/about" },
+    { icon: BookOpen, title: "Journal", body: "Stories, thoughts and inspiration behind the brand.", cta: "Read the journal", href: "/journal" },
+    { icon: Mail, title: "Contact us", body: "Reach out for support, questions or collaborations.", cta: "Get in touch", href: "/pages/contact" },
   ];
   return (
-    <section className="bg-ink py-20 text-cream md:py-24" aria-labelledby="beyond">
-      <div className="gutter">
-        <p className="eyebrow mb-4 text-center !text-cream/70">Get to know {site.name}</p>
+    <section className="border-t border-line bg-white py-20 md:py-24" aria-labelledby="beyond">
+      <div className="gutter mx-auto max-w-6xl">
+        <p className="eyebrow mb-4 text-center">Get to know {site.name}</p>
         <h2 id="beyond" className="display mb-14 text-center">
           Beyond the workshop
         </h2>
-        <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {cards.map((c) => (
-            <article key={c.title} className="text-center">
-              <EditorialArt seed={`beyond-${c.title}`} className="aspect-[4/3]" />
-              <h3 className="mt-7 text-[17px] uppercase tracking-[0.02em]">{c.title}</h3>
-              <p className="mx-auto mt-2 max-w-[240px] text-[13px] text-cream/85">{c.body}</p>
-              <Link href={c.href} className="btn-cream-outline mt-5 h-10 px-5">
+        <div className="grid gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-line">
+          {cards.map(({ icon: Icon, ...c }) => (
+            <article key={c.title} className="flex flex-col items-center px-6 text-center">
+              <span className="grid h-16 w-16 place-items-center rounded-full bg-paper text-accent">
+                <Icon size={24} strokeWidth={1.3} aria-hidden />
+              </span>
+              <h3 className="mt-6 text-[15px] uppercase tracking-[0.06em]">{c.title}</h3>
+              <p className="mx-auto mt-2 max-w-[220px] text-[13px] leading-relaxed text-ink/70">{c.body}</p>
+              <Link
+                href={c.href}
+                className="link-underline mt-5 inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.12em]"
+              >
                 {c.cta} <ArrowRight size={13} />
               </Link>
             </article>

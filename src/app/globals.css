@@ -85,18 +85,55 @@ body {
     @apply font-display text-[32px] leading-[1.1] font-medium uppercase tracking-[0.02em] md:text-[46px];
   }
 
+  /* Buttons: on hover a circle rises from the bottom edge, fills the box and inverts
+     the colours. --btn-fill is the circle colour; override it per button when needed,
+     e.g. className="btn [--btn-fill:var(--color-ink)]". */
+  .btn,
+  .btn-outline,
+  .btn-cream,
+  .btn-cream-outline {
+    @apply relative isolate inline-flex h-11 cursor-pointer items-center justify-center gap-2 overflow-hidden border px-7 text-[11px] font-medium uppercase tracking-[0.12em] disabled:cursor-not-allowed disabled:opacity-50;
+    transition: color 0.35s ease 0.1s;
+  }
+  .btn::before,
+  .btn-outline::before,
+  .btn-cream::before,
+  .btn-cream-outline::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 100%;
+    /* wide enough that, centred on the bottom edge, it covers the top corners */
+    width: calc(120% + 6rem);
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background: var(--btn-fill);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  :is(.btn, .btn-outline, .btn-cream, .btn-cream-outline):not(:disabled):is(:hover, :focus-visible)::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :is(.btn, .btn-outline, .btn-cream, .btn-cream-outline)::before {
+      transition-duration: 0.01s;
+    }
+  }
+
   .btn {
-    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-ink bg-ink px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-cream transition-colors duration-200 hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-50;
+    @apply border-ink bg-ink text-cream [--btn-fill:#fff] not-disabled:hover:text-ink not-disabled:focus-visible:text-ink;
   }
   .btn-outline {
-    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-ink bg-transparent px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:bg-ink hover:text-cream disabled:cursor-not-allowed disabled:opacity-50;
+    @apply border-ink bg-transparent text-ink [--btn-fill:var(--color-ink)] not-disabled:hover:text-cream not-disabled:focus-visible:text-cream;
   }
   /* buttons used on dark surfaces */
   .btn-cream {
-    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-cream bg-cream px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:bg-transparent hover:text-cream;
+    @apply border-cream bg-cream text-ink [--btn-fill:var(--color-ink)] not-disabled:hover:text-cream not-disabled:focus-visible:text-cream;
   }
   .btn-cream-outline {
-    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-cream/70 bg-transparent px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-cream transition-colors duration-200 hover:bg-cream hover:text-ink;
+    @apply border-cream/70 bg-transparent text-cream [--btn-fill:var(--color-cream)] not-disabled:hover:text-ink not-disabled:focus-visible:text-ink;
   }
 
   .link-underline {
