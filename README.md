@@ -1,0 +1,90 @@
+# Virasaa storefront (Next.js)
+
+Storefront for **Virasaa**: handcrafted wooden home decor, kitchen & dining pieces and
+accessories. Built with the Next.js App Router, TypeScript and Tailwind CSS: an editorial
+layout (big type, walnut/cream/terracotta palette, split collections, horizontal collection
+rail, mega menu) with the whole shopping flow working end to end.
+
+**The brand name is real; almost everything else is still placeholder content.** Products,
+prices, copy, contact details, policies and images are invented. See [`DUMMY_CONTENT.md`](./DUMMY_CONTENT.md) for
+the exact list of what to replace and where it lives.
+
+## Run it
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm start   # production build
+```
+
+Requires Node 20 or newer. No environment variables and no database are needed.
+
+## What is included
+
+| Area | Routes |
+| --- | --- |
+| Home | `/` (hero, value strip, featured product, best sellers, split collections, horizontal rail, press wall, stores) |
+| Catalogue | `/collections/[handle]` with filters (in stock, room, price, finish) and sorting, `/products/[handle]`, `/search` |
+| Bag and checkout | bag drawer, `/cart`, `/checkout` (contact, address, delivery, payment, promo code), simulated payment gateway, `/checkout/success` |
+| Account | `/account/login`, `/account/register`, `/account/forgot-password`, `/account` (overview), `/account/orders`, `/account/orders/[id]`, `/account/addresses`, `/account/profile` |
+| Policies | `/policies/[slug]`: terms, privacy, refunds, returns-and-exchange, cancellations, shipping, warranty, payments, pricing, cookies, accessibility, disclaimer, intellectual-property |
+| Info | `/pages/about`, `/pages/sustainability`, `/pages/careers`, `/pages/corporate-gifts`, `/pages/contact`, `/pages/faqs`, `/pages/track-order`, `/pages/stores`, `/journal`, `/journal/[slug]`, `/sitemap` |
+| API | `POST /api/orders` re-prices the bag on the server (demo, saves nothing) |
+
+## How the code is organised
+
+```
+src/
+  app/                    routes (one folder per URL segment)
+  components/             UI building blocks
+    Placeholder.tsx       draws every "image" in the project (swap for real photos here)
+    Header.tsx            header, mega menu, menu drawer, search overlay
+    CartDrawer.tsx        bag drawer + line item + quantity stepper
+    ProductView.tsx       product page gallery, options, add to bag
+    CollectionView.tsx    product grid with filters and sorting
+    CheckoutView.tsx      checkout form + simulated payment gateway
+    account/              sign in, register, account pages
+  lib/
+    site.ts               brand, contact details, navigation, footer links
+    products.ts           the catalogue (dummy)
+    collections.ts        collections = title + description + filter over the catalogue
+    content.ts            policies, FAQs, stores, journal posts, info pages (dummy)
+    pricing.ts            promo codes, shipping options, totals (shared by browser and server)
+    store.ts              bag, session, accounts, orders (browser localStorage, demo only)
+  app/globals.css         design tokens (colours, fonts) and shared classes (.btn, .field, .display ...)
+```
+
+To re-skin the store, start with the `@theme` block in `src/app/globals.css` and the
+`site` object in `src/lib/site.ts`.
+
+## What is real and what is simulated
+
+Real, working logic:
+
+- Bag (add, change quantity, remove, persists across reloads)
+- Filtering, sorting and search over the catalogue
+- Checkout validation, promo codes, delivery options, cash-on-delivery fee
+- Server-side re-pricing of the order in `src/app/api/orders/route.ts`
+- Account pages, saved addresses, order history, order tracking
+
+Simulated (replace before going live):
+
+- **Payments.** No gateway is connected. Clicking Pay opens a "Demo Pay" window where you
+  choose a successful or failed outcome. No card, UPI or bank details are ever collected.
+  To go live, create the gateway order inside `POST /api/orders` with your secret key, open
+  the provider's hosted checkout from `CheckoutView.tsx` in place of the demo window, and
+  confirm the payment in a webhook.
+- **Accounts.** Users, sessions and orders are stored in the browser's `localStorage`
+  (`src/lib/store.ts`). Passwords are only SHA-256 hashed in the browser, which is not
+  secure storage. Replace with a real auth provider (Auth.js, Clerk, Supabase Auth ...) and
+  a database.
+- **Emails and forms.** Newsletter, contact form and order confirmation send nothing.
+- **Images.** There are no image files; `Placeholder.tsx` draws illustrations as inline SVG.
+
+## Notes
+
+- Built on Next.js 16 with Cache Components enabled (the `create-next-app` default). Pages
+  that read the URL on the client (`useSearchParams`, `usePathname`) sit inside `<Suspense>`.
+- Fonts are bundled through `@fontsource` (Jost for text, Cormorant Garamond for headings), so
+  there is no runtime request to Google Fonts.
+- `AGENTS.md` was generated by `create-next-app` for AI coding tools; delete it if you do not use one.

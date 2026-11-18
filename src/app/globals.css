@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   DESIGN TOKENS
+   Change these to re-skin the whole store.
+------------------------------------------------------------------- */
+@theme {
+  --color-ink: #2b1d14; /* dark walnut: text, buttons, dark bands */
+  --color-cream: #f8f0e3; /* text on dark surfaces */
+  --color-accent: #8f6230; /* antique gold from the logo */
+  --color-tile: #ece2d3; /* product image backdrop (logo beige) */
+  --color-line: #e6dccd; /* hairlines */
+  --color-muted: #75655a; /* secondary text */
+  --color-paper: #f3ebdf; /* soft warm surface */
+
+  --font-sans: "Jost Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Garamond", "Times New Roman", serif; /* closest web match to the logo wordmark */
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-slow: marquee 90s linear infinite;
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-slide-in: slide-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fffcf7;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* page gutter */
+  .gutter {
+    @apply px-5 md:px-8 lg:px-12;
+  }
+
+  /* tiny uppercase label that sits above headings */
+  .eyebrow {
+    @apply text-[11px] uppercase tracking-[0.14em] text-muted;
+  }
+
+  /* section heading */
+  .display {
+    @apply font-display text-[32px] leading-[1.1] font-medium uppercase tracking-[0.02em] md:text-[46px];
+  }
+
+  .btn {
+    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-ink bg-ink px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-cream transition-colors duration-200 hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-outline {
+    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-ink bg-transparent px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:bg-ink hover:text-cream disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  /* buttons used on dark surfaces */
+  .btn-cream {
+    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-cream bg-cream px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-ink transition-colors duration-200 hover:bg-transparent hover:text-cream;
+  }
+  .btn-cream-outline {
+    @apply inline-flex h-11 cursor-pointer items-center justify-center gap-2 border border-cream/70 bg-transparent px-7 text-[11px] font-medium uppercase tracking-[0.12em] text-cream transition-colors duration-200 hover:bg-cream hover:text-ink;
+  }
+
+  .link-underline {
+    @apply underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60;
+  }
+
+  .field {
+    @apply h-12 w-full border border-ink/25 bg-white px-4 text-[14px] text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-ink focus-visible:outline-ink focus-visible:outline-offset-0;
+  }
+  .field-label {
+    @apply mb-1.5 block text-[11px] uppercase tracking-[0.12em] text-muted;
+  }
+
+  /* long-form text (policies, journal) */
+  .prose-store h2 {
+    @apply mt-12 mb-3 text-[15px] font-medium uppercase tracking-[0.06em];
+  }
+  .prose-store p {
+    @apply mb-4 text-[15px] leading-[1.75] text-ink/85;
+  }
+  .prose-store ul {
+    @apply mb-4 list-disc space-y-1.5 pl-5 text-[15px] leading-[1.7] text-ink/85;
+  }
+}
+
+/* hide scrollbars on horizontal carousels */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* decorative wood-grain pattern used on banners (pure CSS, no image file) */
+.pattern-grain {
+  background-color: #cfa676;
+  background-image:
+    repeating-radial-gradient(ellipse 140% 38% at 30% 120%, transparent 0 9px, rgb(122 85 52 / 0.35) 10px 11px, transparent 12px 19px),
+    repeating-linear-gradient(176deg, transparent 0 14px, rgb(122 85 52 / 0.18) 15px 16px, transparent 17px 29px),
+    linear-gradient(90deg, #c99c69, #d8b484 45%, #c4955f);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
