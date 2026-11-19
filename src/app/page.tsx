@@ -250,9 +250,14 @@ function SplitCollection({
             </Link>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:gap-x-12">
-          {products.map((p) => (
-            <ProductCard key={p.handle} product={p} className="mx-auto w-full max-w-[260px]" />
+        <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:gap-x-12">
+          {products.map((p, i) => (
+            <ProductCard
+              key={p.handle}
+              product={p}
+              /* stacked layout below lg: four is plenty, the button above leads to the rest */
+              className={`mx-auto w-full max-w-[260px] ${i >= 4 ? "max-lg:hidden" : ""}`}
+            />
           ))}
         </div>
       </div>
@@ -448,20 +453,20 @@ function Beyond() {
     <section className="border-t border-line bg-white py-20 md:py-24" aria-labelledby="beyond">
       <div className="gutter mx-auto max-w-6xl">
         <p className="eyebrow mb-4 text-center">Get to know {site.name}</p>
-        <h2 id="beyond" className="display mb-14 text-center">
+        <h2 id="beyond" className="display mb-12 text-center md:mb-14">
           Beyond the workshop
         </h2>
-        <div className="grid gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-line">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-12 lg:grid-cols-4 lg:gap-x-0 lg:divide-x lg:divide-line">
           {cards.map(({ icon: Icon, ...c }) => (
-            <article key={c.title} className="flex flex-col items-center px-6 text-center">
-              <span className="grid h-16 w-16 place-items-center rounded-full bg-paper text-accent">
+            <article key={c.title} className="flex flex-col items-center text-center sm:px-6">
+              <span className="grid h-14 w-14 place-items-center rounded-full bg-paper text-accent md:h-16 md:w-16">
                 <Icon size={24} strokeWidth={1.3} aria-hidden />
               </span>
-              <h3 className="mt-6 text-[15px] uppercase tracking-[0.06em]">{c.title}</h3>
-              <p className="mx-auto mt-2 max-w-[220px] text-[13px] leading-relaxed text-ink/70">{c.body}</p>
+              <h3 className="mt-5 text-[13px] uppercase tracking-[0.06em] md:mt-6 md:text-[15px]">{c.title}</h3>
+              <p className="mx-auto mt-2 max-w-[220px] flex-1 text-[12.5px] leading-relaxed text-ink/70 md:text-[13px]">{c.body}</p>
               <Link
                 href={c.href}
-                className="link-underline mt-5 inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.12em]"
+                className="link-underline mt-4 inline-flex min-h-8 items-center gap-1 text-[10.5px] uppercase tracking-[0.1em] md:mt-5 md:text-[11px] md:tracking-[0.12em]"
               >
                 {c.cta} <ArrowRight size={13} />
               </Link>

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ScrollHint } from "./ScrollHint";
 
 /** Scroll-snap carousel with arrow buttons. Children are the slides. */
 export function Carousel({
@@ -50,11 +51,15 @@ export function Carousel({
 
   return (
     <div className="relative" role="region" aria-label={label}>
-      <div
-        ref={ref}
-        className={`no-scrollbar relative flex snap-x snap-mandatory overflow-x-auto scroll-smooth ${className}`}
-      >
-        {children}
+      <div className="relative">
+        <div
+          ref={ref}
+          className={`no-scrollbar relative flex snap-x snap-mandatory overflow-x-auto scroll-smooth ${className}`}
+        >
+          {children}
+        </div>
+        {/* phones get no arrow buttons over the slides, so show a swipe hint instead */}
+        <ScrollHint target={ref} className="md:hidden" />
       </div>
       {arrows === "overlay" ? buttons : <div className="mt-8 flex justify-center">{buttons}</div>}
     </div>

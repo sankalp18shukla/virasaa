@@ -22,7 +22,7 @@ export function Newsletter() {
         e.preventDefault();
         setDone(true);
       }}
-      className="mx-auto max-w-xs text-left"
+      className="max-w-sm text-left md:mx-auto md:max-w-xs"
     >
       <div className="flex items-center border-b border-cream/70">
         <input
@@ -30,7 +30,7 @@ export function Newsletter() {
           required
           placeholder="EMAIL"
           aria-label="Email address"
-          className="h-11 flex-1 bg-transparent text-[12px] tracking-[0.1em] text-cream outline-none placeholder:text-cream/50"
+          className="h-11 min-w-0 flex-1 bg-transparent text-[12px] tracking-[0.1em] text-cream outline-none placeholder:text-cream/50 touch:text-[16px]"
         />
         <button type="submit" aria-label="Subscribe" className="grid h-11 w-10 cursor-pointer place-items-center">
           <ArrowRight size={20} strokeWidth={1.5} />
@@ -46,7 +46,7 @@ export function Newsletter() {
           .
         </span>
       </label>
-      <p className="mt-4 text-center text-[12px] text-cream/60">
+      <p className="mt-4 text-[12px] text-cream/60 md:text-center">
         New drops and early access, a couple of times a month.
       </p>
     </form>

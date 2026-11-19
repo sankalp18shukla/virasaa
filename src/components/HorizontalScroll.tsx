@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ScrollHint } from "./ScrollHint";
 
 /**
  * Desktop: the section pins to the viewport and vertical scrolling moves the
@@ -9,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 export function HorizontalScroll({ children, label }: { children: React.ReactNode; label: string }) {
   const outer = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const scroller = useRef<HTMLDivElement>(null);
   const [distance, setDistance] = useState(0);
 
   // how far the track has to travel
@@ -67,6 +69,7 @@ export function HorizontalScroll({ children, label }: { children: React.ReactNod
       style={pinned ? { height: `calc(100vh - 64px + ${distance}px)` } : undefined}
     >
       <div
+        ref={scroller}
         className={
           pinned
             ? "sticky top-16 h-[calc(100vh-64px)] overflow-hidden"
@@ -77,6 +80,8 @@ export function HorizontalScroll({ children, label }: { children: React.ReactNod
           {children}
         </div>
       </div>
+      {/* swipeable below lg (desktop scrolls it with the page instead) */}
+      {!pinned && <ScrollHint target={scroller} tone="dark" className="lg:hidden" />}
     </section>
   );
 }

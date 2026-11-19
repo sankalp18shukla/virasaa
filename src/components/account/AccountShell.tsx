@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { ScrollHint } from "../ScrollHint";
 import { auth, useHydrated, useUser } from "@/lib/store";
 import { cx } from "@/lib/format";
 
@@ -19,6 +20,7 @@ export function AccountShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const hydrated = useHydrated();
   const user = useUser();
+  const tabs = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (hydrated && !user) router.replace("/account/login");
@@ -33,8 +35,11 @@ export function AccountShell({ children }: { children: React.ReactNode }) {
         <h1 className="display">Hello, {user.firstName}</h1>
       </header>
       <div className="grid gap-10 lg:grid-cols-12">
-        <nav aria-label="Account" className="lg:col-span-3">
-          <ul className="no-scrollbar flex gap-1 overflow-x-auto border-b border-line lg:flex-col lg:border-b-0">
+        {/* min-w-0 on both columns: a grid item is otherwise as wide as its widest
+            content, so the scrolling tab row pushed the whole page past the screen edge */}
+        <nav aria-label="Account" className="relative min-w-0 lg:col-span-3">
+          <ScrollHint target={tabs} variant="edge" className="lg:hidden" />
+          <ul ref={tabs} className="no-scrollbar flex gap-1 overflow-x-auto border-b border-line lg:flex-col lg:border-b-0">
             {nav.map((item) => {
               const active = item.href === "/account" ? pathname === "/account" : pathname.startsWith(item.href);
               return (
@@ -63,7 +68,7 @@ export function AccountShell({ children }: { children: React.ReactNode }) {
             </li>
           </ul>
         </nav>
-        <div className="lg:col-span-9">{children}</div>
+        <div className="min-w-0 lg:col-span-9">{children}</div>
       </div>
     </div>
   );

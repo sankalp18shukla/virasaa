@@ -33,19 +33,19 @@ export function GiftingSection() {
           </p>
         </header>
 
-        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-12 grid grid-cols-2 gap-3 md:mt-14 md:gap-5 lg:grid-cols-4">
           {occasions.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="flex flex-col items-center border border-line px-6 py-9 text-center">
-              <span className="grid h-14 w-14 place-items-center rounded-full bg-paper text-accent">
+            <li key={title} className="flex flex-col items-center border border-line px-3 py-7 text-center md:px-6 md:py-9">
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-paper text-accent md:h-14 md:w-14">
                 <Icon size={22} strokeWidth={1.4} aria-hidden />
               </span>
-              <h3 className="mt-5 text-[13px] uppercase tracking-[0.1em]">{title}</h3>
-              <p className="mt-2 max-w-[220px] text-[13px] leading-relaxed text-ink/70">{body}</p>
+              <h3 className="mt-4 text-[12px] uppercase leading-snug tracking-[0.08em] md:mt-5 md:text-[13px] md:tracking-[0.1em]">{title}</h3>
+              <p className="mt-2 max-w-[220px] text-[12px] leading-relaxed text-ink/70 md:text-[13px]">{body}</p>
             </li>
           ))}
         </ul>
 
-        <ul className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3">
+        <ul className="mx-auto mt-10 flex w-fit flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-8">
           {perks.map(({ icon: Icon, label }) => (
             <li key={label} className="flex items-center gap-2 text-[11px] uppercase tracking-[0.12em] text-muted">
               <Icon size={15} strokeWidth={1.5} className="text-accent" aria-hidden />

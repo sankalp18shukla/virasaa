@@ -10,6 +10,7 @@ import { cx, money } from "@/lib/format";
 import { AddToBag } from "./AddToBag";
 import { QtyStepper } from "./CartDrawer";
 import { ProductArt } from "./Placeholder";
+import { ScrollHint } from "./ScrollHint";
 
 const viewLabels = ["Front", "Close-up", "Angle", "Scale", "Grain detail", "Styled"];
 
@@ -32,6 +33,7 @@ export function ProductView({ product: p }: { product: Product }) {
   const [copied, setCopied] = useState(false);
   const [showBar, setShowBar] = useState(false);
   const buyRef = useRef<HTMLDivElement>(null);
+  const gallery = useRef<HTMLDivElement>(null);
 
   const color = p.colors[colorIdx];
   const isGift = p.type === "gift-card";
@@ -61,8 +63,9 @@ export function ProductView({ product: p }: { product: Product }) {
     <>
       <div className="gutter grid gap-10 pb-20 pt-4 lg:grid-cols-12 lg:gap-14">
         {/* gallery: swipe on mobile, 2-column grid on desktop */}
-        <div className="lg:col-span-8">
-          <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 md:mx-0 md:grid md:grid-cols-2 md:gap-3 md:overflow-visible md:px-0">
+        <div className="relative lg:col-span-8">
+          <ScrollHint target={gallery} className="md:hidden" />
+          <div ref={gallery} className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 md:mx-0 md:grid md:grid-cols-2 md:gap-3 md:overflow-visible md:px-0">
             {viewLabels.map((label, view) => (
               <ProductArt
                 key={`${color.name}-${view}`}

@@ -249,7 +249,7 @@ export function CheckoutView() {
                     type="button"
                     onClick={() => fillFrom(a)}
                     className={cx(
-                      "cursor-pointer border px-3 py-2 text-left text-[12px] leading-snug",
+                      "w-full cursor-pointer border px-3 py-2 text-left text-[12px] leading-snug sm:w-auto",
                       form.line1 === a.line1 && form.pincode === a.pincode ? "border-ink" : "border-ink/25 hover:border-ink",
                     )}
                   >

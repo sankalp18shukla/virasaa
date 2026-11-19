@@ -217,7 +217,7 @@ export function Addresses() {
             <li key={a.id} className="border border-ink/15 p-5">
               {a.isDefault && <p className="eyebrow mb-2 !text-ink">Default</p>}
               <AddressBlock a={a} />
-              <div className="mt-4 flex gap-4 text-[12px]">
+              <div className="mt-4 flex gap-5 text-[12px] touch:mt-2 touch:[&>button]:min-h-10">
                 <button onClick={() => setEditing({ ...a, line2: a.line2 ?? "" })} className="cursor-pointer underline underline-offset-4">
                   Edit
                 </button>

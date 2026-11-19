@@ -55,23 +55,25 @@ export default async function ProductPage({ params }: PageProps<"/products/[hand
 
       {/* DUMMY brand pillars */}
       <section className="bg-ink py-16 text-cream md:py-20">
-        <ul className="gutter grid gap-12 text-center md:grid-cols-3">
+        <ul className="gutter mx-auto grid max-w-md gap-9 md:max-w-none md:grid-cols-3 md:gap-12 md:text-center">
           {[
             { icon: HandHeart, title: "Made by hand", body: "Every piece is carved, turned or painted by an artisan, not a machine line." },
             { icon: TreePine, title: "Solid wood", body: "Real hardwood with its own grain, so no two pieces are ever quite the same." },
             { icon: Award, title: "Made to last", body: "Built to be used every day and handed down. Placeholder copy: your promise here." },
           ].map(({ icon: Icon, title, body }) => (
-            <li key={title}>
-              <Icon size={44} strokeWidth={1} className="mx-auto mb-5 text-accent" />
-              <h3 className="text-[24px]">{title}</h3>
-              <p className="mx-auto mt-2 max-w-xs text-[13px] text-cream/85">{body}</p>
+            <li key={title} className="flex items-start gap-5 md:block">
+              <Icon strokeWidth={1} className="h-10 w-10 shrink-0 text-accent md:mx-auto md:mb-5 md:h-11 md:w-11" />
+              <div>
+                <h3 className="text-[20px] md:text-[24px]">{title}</h3>
+                <p className="mt-1 max-w-xs text-[13px] text-cream/85 md:mx-auto md:mt-2">{body}</p>
+              </div>
             </li>
           ))}
         </ul>
       </section>
 
       <section className="gutter py-16">
-        <ul className="grid grid-cols-2 gap-10 text-center md:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-10 text-center md:grid-cols-4 md:gap-10">
           {[
             { icon: Truck, label: "Free shipping" },
             { icon: HandHeart, label: "Handcrafted in small batches" },

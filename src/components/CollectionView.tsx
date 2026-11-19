@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import type { Product, Room } from "@/lib/products";
 import { rooms } from "@/lib/site";
@@ -13,18 +13,47 @@ type Sort = "featured" | "price-asc" | "price-desc" | "name" | "new";
 const roomHandles = rooms.map((r) => r.handle);
 const roomLabel = (r: Room) => rooms.find((x) => x.handle === r)?.label ?? r;
 
+/** Phones: one cell of the full-width filter bar, its panel spanning the bar.
+ *  Desktop: an inline label with a 288px popover under it. */
 function FilterMenu({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <details className="group relative">
-      <summary className="flex cursor-pointer list-none items-center gap-1 text-[11px] uppercase tracking-[0.1em] hover:opacity-60 [&::-webkit-details-marker]:hidden">
+    <details data-filter className="group md:relative md:order-3">
+      <summary className="flex h-12 cursor-pointer list-none items-center justify-center gap-1 text-[11px] uppercase tracking-[0.1em] hover:opacity-60 md:h-auto md:justify-start [&::-webkit-details-marker]:hidden">
         {label}
         <Plus size={14} className="transition-transform group-open:rotate-45" />
       </summary>
-      <div className="absolute left-0 top-full z-20 mt-3 w-72 border border-line bg-white p-5 shadow-xl">
+      <div className="absolute inset-x-0 top-full z-20 border border-line bg-white p-5 shadow-xl md:left-0 md:right-auto md:mt-3 md:w-72">
         {children}
       </div>
     </details>
   );
+}
+
+/** One open filter at a time, and a tap anywhere else closes it. */
+function useFilterMenus(toolbar: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = toolbar.current;
+    if (!el) return;
+    const menus = () => [...el.querySelectorAll<HTMLDetailsElement>("details[data-filter]")];
+    const onToggle = (e: Event) => {
+      const opened = e.target as HTMLDetailsElement;
+      if (opened.open) menus().forEach((d) => d !== opened && (d.open = false));
+    };
+    const onPointer = (e: PointerEvent) => {
+      menus().forEach((d) => d.open && !d.contains(e.target as Node) && (d.open = false));
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") menus().forEach((d) => (d.open = false));
+    };
+    el.addEventListener("toggle", onToggle, true); // toggle doesn't bubble
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      el.removeEventListener("toggle", onToggle, true);
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [toolbar]);
 }
 
 /** Product grid with client-side filtering and sorting. */
@@ -40,6 +69,8 @@ export function CollectionView({ products, basePath }: { products: Product[]; ba
   const [max, setMax] = useState("");
   const [colors, setColors] = useState<string[]>([]);
   const [sort, setSort] = useState<Sort>("featured");
+  const toolbar = useRef<HTMLDivElement>(null);
+  useFilterMenus(toolbar);
 
   const allColors = useMemo(() => {
     const map = new Map<string, string>();
@@ -85,22 +116,10 @@ export function CollectionView({ products, basePath }: { products: Product[]; ba
 
   return (
     <div className="gutter pb-24">
-      <div className="flex flex-wrap items-center gap-x-7 gap-y-4 py-8">
-        <p className="text-[11px] uppercase tracking-[0.1em] text-muted" aria-live="polite">
-          {visible.length} {visible.length === 1 ? "product" : "products"}
-        </p>
-
-        <label className="flex cursor-pointer items-center gap-2 text-[11px] uppercase tracking-[0.1em]">
-          <input
-            type="checkbox"
-            checked={inStockOnly}
-            onChange={(e) => setInStockOnly(e.target.checked)}
-            className="peer sr-only"
-          />
-          <span className="relative h-[18px] w-8 rounded-full bg-ink/20 transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-[14px] after:w-[14px] after:rounded-full after:bg-white after:transition-transform peer-checked:bg-ink peer-checked:after:translate-x-[14px] peer-focus-visible:ring-2 peer-focus-visible:ring-accent" />
-          In stock only
-        </label>
-
+      {/* Phones: a three-cell filter bar, then [in stock … sort], then [count … clear].
+          Desktop: one row; the wrappers below are `md:contents` and md:order-* restores the order. */}
+      <div ref={toolbar} className="py-6 md:flex md:flex-wrap md:items-center md:gap-x-7 md:gap-y-4 md:py-8">
+        <div className="relative grid grid-cols-3 divide-x divide-line border-y border-line md:contents">
         <FilterMenu label="Room">
           <div className="flex flex-wrap gap-2">
             {[null, ...roomHandles].map((r) => (
@@ -159,27 +178,46 @@ export function CollectionView({ products, basePath }: { products: Product[]; ba
             })}
           </ul>
         </FilterMenu>
+        </div>
 
-        {hasFilters && (
-          <button onClick={reset} className="link-underline cursor-pointer text-[11px] uppercase tracking-[0.1em] text-muted">
-            Clear all{room ? ` (showing ${roomLabel(room).toLowerCase()})` : ""}
-          </button>
-        )}
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-x-5 gap-y-4 md:contents">
+          <label className="flex min-h-10 cursor-pointer items-center gap-2 text-[11px] uppercase tracking-[0.1em] md:order-2">
+            <input
+              type="checkbox"
+              checked={inStockOnly}
+              onChange={(e) => setInStockOnly(e.target.checked)}
+              className="peer sr-only"
+            />
+            <span className="relative h-[18px] w-8 rounded-full bg-ink/20 transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-[14px] after:w-[14px] after:rounded-full after:bg-white after:transition-transform peer-checked:bg-ink peer-checked:after:translate-x-[14px] peer-focus-visible:ring-2 peer-focus-visible:ring-accent" />
+            In stock only
+          </label>
 
-        <label className="ml-auto flex items-center gap-3 text-[11px] uppercase tracking-[0.1em]">
-          Sort by:
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
-            className="h-10 cursor-pointer border border-ink bg-white px-3 text-[11px] uppercase tracking-[0.1em]"
-          >
-            <option value="featured">Featured</option>
-            <option value="new">Newest</option>
-            <option value="price-asc">Price, low to high</option>
-            <option value="price-desc">Price, high to low</option>
-            <option value="name">Alphabetically, A to Z</option>
-          </select>
-        </label>
+          <label className="flex items-center gap-3 text-[11px] uppercase tracking-[0.1em] md:order-5 md:ml-auto">
+            <span className="sr-only md:not-sr-only">Sort by:</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as Sort)}
+              className="h-10 max-w-[11.5rem] cursor-pointer border border-ink bg-white px-3 text-[11px] uppercase tracking-[0.1em] touch:text-[16px] touch:normal-case touch:tracking-normal md:max-w-none"
+            >
+              <option value="featured">Featured</option>
+              <option value="new">Newest</option>
+              <option value="price-asc">Price, low to high</option>
+              <option value="price-desc">Price, high to low</option>
+              <option value="name">Alphabetically, A to Z</option>
+            </select>
+          </label>
+
+          <div className="flex w-full items-center justify-between gap-4 md:contents">
+            <p className="text-[11px] uppercase tracking-[0.1em] text-muted md:order-1" aria-live="polite">
+              {visible.length} {visible.length === 1 ? "product" : "products"}
+            </p>
+            {hasFilters && (
+              <button onClick={reset} className="link-underline cursor-pointer text-right text-[11px] uppercase tracking-[0.1em] text-muted md:order-4">
+                Clear all{room ? ` (showing ${roomLabel(room).toLowerCase()})` : ""}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {visible.length === 0 ? (

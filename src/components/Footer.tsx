@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { footerLegal, footerNav, site } from "@/lib/site";
+import { FooterColumn } from "./FooterColumn";
 import { Newsletter } from "./Newsletter";
 
 export function Footer() {
@@ -36,9 +37,8 @@ export function Footer() {
         <div className="border-t border-cream/15" />
       </div>
 
-      <div className="gutter grid gap-x-8 gap-y-14 pb-20 pt-14 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="text-center">
-          <h3 className="mb-5 text-[17px] uppercase tracking-[0.02em]">Contact</h3>
+      <div className="gutter grid pb-12 pt-2 md:grid-cols-2 md:gap-x-8 md:gap-y-14 md:pb-20 md:pt-14 lg:grid-cols-3">
+        <FooterColumn title="Contact">
           <address className="text-[13px] not-italic leading-relaxed text-cream/85">
             {company.legalName}
             <br />
@@ -62,12 +62,11 @@ export function Footer() {
             <span className="mt-4 block text-[11px] uppercase tracking-[0.12em]">Timings</span>
             {company.hours}
           </address>
-        </div>
+        </FooterColumn>
 
         {footerNav.map((col) => (
-          <div key={col.title} className="text-center">
-            <h3 className="mb-5 text-[17px] uppercase tracking-[0.02em]">{col.title}</h3>
-            <ul className="space-y-2">
+          <FooterColumn key={col.title} title={col.title}>
+            <ul className="space-y-3 md:space-y-2">
               {col.links.map((l) => (
                 <li key={l.label}>
                   <Link
@@ -79,11 +78,11 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </FooterColumn>
         ))}
 
-        <div className="text-center">
-          <h3 className="mb-5 text-[17px] uppercase tracking-[0.02em]">Newsletter</h3>
+        <div className="pt-8 md:pt-0 md:text-center">
+          <h3 className="mb-4 text-[15px] uppercase tracking-[0.04em] md:mb-5 md:text-[17px] md:tracking-[0.02em]">Newsletter</h3>
           <Newsletter />
         </div>
       </div>

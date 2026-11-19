@@ -16,7 +16,7 @@ export function QtyStepper({
   onChange: (qty: number) => void;
   small?: boolean;
 }) {
-  const size = small ? "h-8 w-8" : "h-11 w-11";
+  const size = small ? "h-8 w-8 touch:h-10 touch:w-10" : "h-11 w-11"; // bigger on touch screens: fingers, not cursors
   return (
     <div className="inline-flex items-center border border-ink/25">
       <button

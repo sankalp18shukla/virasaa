@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { MessageCircle } from "lucide-react";
+import { Suspense } from "react";
 import "@fontsource-variable/jost";
 import "@fontsource/cormorant-garamond/500.css";
 import "@fontsource/cormorant-garamond/600.css";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ChatButton } from "@/components/ChatButton";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -29,14 +29,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
-        {/* DUMMY: floating help button. Point it at WhatsApp / live chat. */}
-        <Link
-          href="/pages/contact"
-          aria-label="Chat with us"
-          className="fixed bottom-5 right-5 z-30 grid h-12 w-12 place-items-center rounded-full bg-ink text-cream shadow-lg ring-1 ring-cream/40 transition-transform hover:scale-105"
-        >
-          <MessageCircle size={22} strokeWidth={1.6} />
-        </Link>
+        <Suspense fallback={null}>
+          <ChatButton />
+        </Suspense>
       </body>
     </html>
   );
