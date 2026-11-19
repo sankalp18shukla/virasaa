@@ -45,7 +45,7 @@ export function Logo({ className = "", collapsed = false }: { className?: string
             height={147}
             preload
             className={cx(
-              "ml-2.5 h-[22px] w-auto max-w-none origin-left transition-[transform,opacity,filter] duration-[1400ms] ease-[cubic-bezier(0.45,0,0.2,1)] motion-reduce:transition-none md:h-[26px]",
+              "ml-2.5 h-[22px] w-auto max-w-none origin-left transition-[translate,scale,opacity,filter] duration-[1400ms] ease-[cubic-bezier(0.45,0,0.2,1)] motion-reduce:transition-none md:h-[26px]",
               collapsed
                 ? "-translate-x-[70%] scale-[0.25] opacity-0 blur-[3px] delay-0"
                 : "translate-x-0 scale-100 opacity-100 blur-0 delay-[450ms]",
